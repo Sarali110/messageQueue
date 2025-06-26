@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Message Queue UI</title>
+    <style>
+        body {
+            font-family: Arial;
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+        }
+
+        input, button, select {
+            margin: 5px 0;
+            padding: 6px;
+            width: 100%;
+        }
+
+        pre {
+            background: #f4f4f4;
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h2>Produce Message</h2>
+    <input id="produce-queue" placeholder="Queue name">
+    <input id="produce-message" placeholder="Message">
+    <button onclick="produce()">Send</button>
+    <pre id="produce-result"></pre>
+
+    <h2>Consume Message</h2>
+    <input id="consume-queue" placeholder="Queue name">
+    <button onclick="consume()">Receive</button>
+    <pre id="consume-result"></pre>
+
+    <h2>Acknowledge Message</h2>
+    <input id="ack-queue" placeholder="Queue name">
+    <input id="ack-id" placeholder="Message ID">
+    <button onclick="ack()">Acknowledge</button>
+    <pre id="ack-result"></pre>
+
+    <script>
+        async function produce() {
+            const queue = document.getElementById('produce-queue').value;
+            const message = document.getElementById('produce-message').value;
+            const res = await fetch('/produce', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ queue, message })
+            });
+            document.getElementById('produce-result').textContent = await res.text();
+        }
+
+        async function consume() {
+            const queue = document.getElementById('consume-queue').value;
+            const res = await fetch(`/consume?queue=${queue}`);
+            const data = await res.json();
+            document.getElementById('consume-result').textContent = JSON.stringify(data, null, 2);
+            if (data.id) {
+                document.getElementById('ack-id').value = data.id;
+                document.getElementById('ack-queue').value = queue;
+            }
+        }
+
+        async function ack() {
+            const queue = document.getElementById('ack-queue').value;
+            const id = document.getElementById('ack-id').value;
+            const res = await fetch('/ack', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ queue, id })
+            });
+            document.getElementById('ack-result').textContent = await res.text();
+        }
+    </script>
+</body>
+</html>

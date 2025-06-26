@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: flask-message-queue
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: python app.py
+    envVars:
+      - key: REDIS_URL
+        value: "rediss://default:AX-CAAIjcDExMjk5ODFlODVmMGE0YjdmYWJhYWIyMmE5MTk4M2FiMXAxMA@known-anemone-32642.upstash.io:6379"
