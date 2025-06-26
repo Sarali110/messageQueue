@@ -6,4 +6,4 @@ services:
     startCommand: python app.py
     envVars:
       - key: REDIS_URL
-        value: "rediss://default:AX-CAAIjcDExMjk5ODFlODVmMGE0YjdmYWJhYWIyMmE5MTk4M2FiMXAxMA@known-anemone-32642.upstash.io:6379"
+        value: rediss://default:AX-CAAIjcDExMjk5ODFlODVmMGE0YjdmYWJhYWIyMmE5MTk4M2FiMXAxMA@known-anemone-32642.upstash.io:6379
