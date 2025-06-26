@@ -1,15 +1,15 @@
 ﻿from flask import Flask, request, jsonify, render_template
-from queue import MessageQueue
+from message_queue  import MessageQueue
 import os 
 
 
 app = Flask(__name__)
-mq = MessageQueue()
+mq = MessageQueue(os.environ["REDIS_URL"])
 
 
 
 @app.route("/")
-def home():
+def home(): 
     return render_template("index.html")
 
 @app.route("/produce", methods=["POST"])
